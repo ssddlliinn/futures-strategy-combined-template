@@ -9,7 +9,7 @@ if str(g_path) not in sys.path:
     
 main_path = Path(__file__).parent.parent
 if str(main_path) not in sys.path:
-    sys.path.append(str(g_path))
+    sys.path.append(str(main_path))
 
 from pymoo.algorithms.moo.nsga2 import NSGA2
 from pymoo.operators.crossover.pntx import SinglePointCrossover
@@ -23,6 +23,7 @@ from '.strategy_class import get_all_data
 from '.strategy_class import futures_Strategy as fs1
 from '.strategy_class import futures_Strategy as fs2
 
+from combine_strategy import main as combining
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -51,6 +52,8 @@ class trade_problem(Problem):
         for xi in x:
             xi = xi.round(0).astype(int)
             # TODO: change xi to a para dict
+            # one of the strategy can be moved to starting point 
+            # if no paras are changed
             para1 = {}
 
             para2 = {}
@@ -61,7 +64,7 @@ class trade_problem(Problem):
             strategy2.calculate_indicator(para2)
             strategy2.strategy_signal()
             
-            combined_strategy = main(strategy1, strategy2)
+            combined_strategy = combining(strategy1, strategy2)
 
             KPI_dict = combined_strategy.KPI()
             
@@ -71,7 +74,7 @@ class trade_problem(Problem):
             g1 = -f1
             
             f1_list.append(-f1)
-            f2_list.append(f2)
+            f2_list.append(-f2)
             g1_list.append(g1)
             print('.', end='')
             

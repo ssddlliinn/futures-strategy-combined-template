@@ -41,7 +41,7 @@ def combine_record(main, second):
 def main(fs1, fs2):
     combined = combine_record(fs1.record.copy(), fs2.record.copy())
 
-    combined_strategy = futures_Strategy(price1, combined)
+    combined_strategy = futures_Strategy(fs1.price_data, combined)
     combined_strategy.strategy_signal()
     
     return combined_strategy
